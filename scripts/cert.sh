@@ -1,5 +1,4 @@
-"/C=US/ST=MA/L=Boston/O=IT/OU=root/CN=foo.dev.home/emailAddress=root@foo.com"
-
+# Generate self signed root CA cert
 openssl req -nodes -x509 -newkey rsa:2048 -keyout ca.key -out ca.crt -subj "/C=US/ST=MA/L=Boston/O=IT/OU=root/CN=foo.dev.home/emailAddress=root@foo.com"
 
 
