@@ -1,4 +1,4 @@
-#### Run Vault mounting the local data directory
+### Run Vault mounting the local data directory
 
 ```
 [abc@foo 10:52:22 - vault]$docker run -p 8200:8200 -v /home/abc/github/ac427/vault/data:/data -v $(pwd):/root -it --cap-add IPC_LOCK --hostname 'foo.dev.home' --entrypoint /bin/sh vault
@@ -75,10 +75,11 @@
 2020-10-02T15:00:43.546Z [INFO]  core: post-unseal setup complete
 ````
 
-#### Init and unseal
+### Init and unseal
 
 ```
-# cd[abc@foo 07:00:16 - vault]$docker ps
+[abc@foo 10:55:11 - vault]$docker exec -it admiring_jennings /bin/sh
+/ # cd[abc@foo 07:00:16 - vault]$docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS                    NAMES
 4c0a78e1d235        vault               "/bin/sh"           About a minute ago   Up About a minute   0.0.0.0:8200->8200/tcp   pedantic_lichterman
 [abc@foo 08:56:53 - vault]$docker exec -it pedantic_lichterman /bin/sh
@@ -164,7 +165,7 @@ policies             ["root"]
 ```
 
 
-#### Enable userpass
+### Enable userpass
 
 ```
 ~ # vault auth enable userpass
@@ -172,7 +173,7 @@ Success! Enabled userpass auth method at: userpass/
 
 ```
 
-#### Enable KV secrets version 2
+### Enable KV secrets version 2
 
 ```
 ~ # vault secrets enable -version=2 kv
@@ -180,7 +181,7 @@ Success! Enabled the kv secrets engine at: kv/
 
 ```
 
-#### create user abc with admins
+### create user abc with admins policy
 
 ```
 foo:~$ ~ # vault write auth/userpass/users/abc password=foo policies=admins
@@ -206,7 +207,7 @@ policies               ["admins" "default"]
 token_meta_username    abc
 ```
 
-#### Enable github auth
+### Enable github auth
 
 ```
 foo:~$ ~ # vault auth enable github
@@ -216,7 +217,7 @@ Success! Data written to: auth/github/config
 ```
 
 
-#### Test login
+### Test login
 
 ```
 [abc@foo 17:36:42 - scripts]$vault login -method=github token=$GITHUB_TOKEN
@@ -237,7 +238,7 @@ token_meta_org         hpcsquare
 token_meta_username    ac427
 ```
 
-#### Generate policies and syntax check
+### Generate policies and syntax check
 
 ```
 [abc@foo 17:57:34 - policies]$vault policy fmt ops.hcl
@@ -269,14 +270,14 @@ Success! Uploaded policy: ops
 Success! Uploaded policy: dev
 ```
 
-# add user to dev and ops policies
+### add user to dev and ops policies
 
 ```
 ~/config/policies # vault write auth/userpass/users/abc policies="dev,ops"
 Success! Data written to: auth/userpass/users/abc
 ```
 
-# verify as user abc
+### verify as user abc
 ```
 [abc@foo 21:41:38 - vault]$vault login -method=userpass username=abc
 Password (will be hidden):
@@ -303,14 +304,14 @@ destroyed        false
 version          2
 ```
 
-#### Give github user ac427 access to dev policy
+### Give github user ac427 access to dev policy
 
 ```
 ~/config/policies # vault write auth/github/map/users/ac427 value=dev
 Success! Data written to: auth/github/map/users/ac427
 ```
 
-#### Verify as user ac427
+### Verify as user ac427
 
 ```
 [abc@foo 21:43:02 - vault]$vault login -method=github token=$GITHUB_TOKEN
