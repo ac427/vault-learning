@@ -78,8 +78,7 @@
 #### Init and unseal
 
 ```
-[abc@foo 10:55:11 - vault]$docker exec -it admiring_jennings /bin/sh
-/ # cd[abc@foo 07:00:16 - vault]$docker ps
+# cd[abc@foo 07:00:16 - vault]$docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS                    NAMES
 4c0a78e1d235        vault               "/bin/sh"           About a minute ago   Up About a minute   0.0.0.0:8200->8200/tcp   pedantic_lichterman
 [abc@foo 08:56:53 - vault]$docker exec -it pedantic_lichterman /bin/sh
