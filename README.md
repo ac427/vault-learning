@@ -1,8 +1,7 @@
-### Run Vault mounting the local data directory
+#### Mount $(pwd)/data as /data and run vault server  
 
 ```
-[abc@foo 10:52:22 - vault]$docker run -p 8200:8200 -v /home/abc/github/ac427/vault/data:/data -v $(pwd):/root -it --cap-add IPC_LOCK --hostname 'foo.dev.home' --entrypoint /bin/sh vault
-/ # cd
+$docker run -p 8200:8200 -v /home/abc/github/ac427/vault/data:/data -v $(pwd):/root -it --cap-add IPC_LOCK --hostname 'foo.dev.home' -w /root/config --entrypoint /bin/sh vault
 ~/config # vault server --config=config.hcl
 ==> Vault server configuration:
 
@@ -20,80 +19,33 @@
 
 ==> Vault server started! Log data will stream in below:
 
-2020-10-02T14:53:28.981Z [INFO]  proxy environment: http_proxy= https_proxy= no_proxy=
-2020-10-02T14:56:13.584Z [INFO]  core: security barrier not initialized
-2020-10-02T14:56:13.649Z [INFO]  storage.raft: initial configuration: index=1 servers="[{Suffrage:Voter ID:node1 Address:foo.dev.home:8201}]"
-2020-10-02T14:56:13.650Z [INFO]  storage.raft: entering follower state: follower="Node at node1 [Follower]" leader=
-2020-10-02T14:56:20.101Z [WARN]  storage.raft: heartbeat timeout reached, starting election: last-leader=
-2020-10-02T14:56:20.101Z [INFO]  storage.raft: entering candidate state: node="Node at node1 [Candidate]" term=2
-2020-10-02T14:56:20.108Z [INFO]  storage.raft: election won: tally=1
-2020-10-02T14:56:20.108Z [INFO]  storage.raft: entering leader state: leader="Node at node1 [Leader]"
-2020-10-02T14:56:20.127Z [INFO]  core: security barrier initialized: stored=1 shares=5 threshold=3
-2020-10-02T14:56:20.182Z [INFO]  core: post-unseal setup starting
-2020-10-02T14:56:20.198Z [INFO]  core: loaded wrapping token key
-2020-10-02T14:56:20.198Z [INFO]  core: successfully setup plugin catalog: plugin-directory=
-2020-10-02T14:56:20.198Z [INFO]  core: no mounts; adding default mount table
-2020-10-02T14:56:20.205Z [INFO]  core: successfully mounted backend: type=cubbyhole path=cubbyhole/
-2020-10-02T14:56:20.205Z [INFO]  core: successfully mounted backend: type=system path=sys/
-2020-10-02T14:56:20.205Z [INFO]  core: successfully mounted backend: type=identity path=identity/
-2020-10-02T14:56:20.222Z [INFO]  core: successfully enabled credential backend: type=token path=token/
-2020-10-02T14:56:20.222Z [INFO]  core: restoring leases
-2020-10-02T14:56:20.222Z [INFO]  rollback: starting rollback manager
-2020-10-02T14:56:20.222Z [INFO]  expiration: lease restore complete
-2020-10-02T14:56:20.225Z [INFO]  identity: entities restored
-2020-10-02T14:56:20.225Z [INFO]  identity: groups restored
-2020-10-02T14:56:20.225Z [INFO]  core: usage gauge collection is disabled
-2020-10-02T14:56:20.228Z [INFO]  core: post-unseal setup complete
-2020-10-02T14:56:20.236Z [INFO]  core: root token generated
-2020-10-02T14:56:20.260Z [INFO]  core: pre-seal teardown starting
-2020-10-02T14:56:20.260Z [INFO]  rollback: stopping rollback manager
-2020-10-02T14:56:20.260Z [INFO]  core: pre-seal teardown complete
-2020-10-02T15:00:37.971Z [INFO]  core.cluster-listener.tcp: starting listener: listener_address=172.17.0.2:8201
-2020-10-02T15:00:37.971Z [INFO]  core.cluster-listener: serving cluster requests: cluster_listen_address=172.17.0.2:8201
-2020-10-02T15:00:37.973Z [INFO]  storage.raft: initial configuration: index=1 servers="[{Suffrage:Voter ID:node1 Address:foo.dev.home:8201}]"
-2020-10-02T15:00:37.973Z [INFO]  core: vault is unsealed
-2020-10-02T15:00:37.973Z [INFO]  storage.raft: entering follower state: follower="Node at foo.dev.home:8201 [Follower]" leader=
-2020-10-02T15:00:37.973Z [INFO]  core: entering standby mode
-2020-10-02T15:00:43.479Z [WARN]  storage.raft: heartbeat timeout reached, starting election: last-leader=
-2020-10-02T15:00:43.479Z [INFO]  storage.raft: entering candidate state: node="Node at foo.dev.home:8201 [Candidate]" term=3
-2020-10-02T15:00:43.484Z [INFO]  storage.raft: election won: tally=1
-2020-10-02T15:00:43.484Z [INFO]  storage.raft: entering leader state: leader="Node at foo.dev.home:8201 [Leader]"
-2020-10-02T15:00:43.489Z [INFO]  core: acquired lock, enabling active operation
-2020-10-02T15:00:43.541Z [INFO]  core: post-unseal setup starting
-2020-10-02T15:00:43.543Z [INFO]  core: loaded wrapping token key
-2020-10-02T15:00:43.543Z [INFO]  core: successfully setup plugin catalog: plugin-directory=
-2020-10-02T15:00:43.543Z [INFO]  core: successfully mounted backend: type=system path=sys/
-2020-10-02T15:00:43.543Z [INFO]  core: successfully mounted backend: type=identity path=identity/
-2020-10-02T15:00:43.543Z [INFO]  core: successfully mounted backend: type=cubbyhole path=cubbyhole/
-2020-10-02T15:00:43.544Z [INFO]  core: successfully enabled credential backend: type=token path=token/
-2020-10-02T15:00:43.544Z [INFO]  core: restoring leases
-2020-10-02T15:00:43.544Z [INFO]  rollback: starting rollback manager
-2020-10-02T15:00:43.544Z [INFO]  identity: entities restored
-2020-10-02T15:00:43.544Z [INFO]  identity: groups restored
-2020-10-02T15:00:43.544Z [INFO]  expiration: lease restore complete
-2020-10-02T15:00:43.545Z [INFO]  core: usage gauge collection is disabled
-2020-10-02T15:00:43.546Z [INFO]  core: post-unseal setup complete
-````
+```
 
-### Init and unseal
+#### connect to the running container. This is where we do most of the work
 
 ```
-[abc@foo 10:55:11 - vault]$docker exec -it admiring_jennings /bin/sh
-/ # cd[abc@foo 07:00:16 - vault]$docker ps
+[abc@foo 16:18:22 - ~]$docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS                    NAMES
-4c0a78e1d235        vault               "/bin/sh"           About a minute ago   Up About a minute   0.0.0.0:8200->8200/tcp   pedantic_lichterman
-[abc@foo 08:56:53 - vault]$docker exec -it pedantic_lichterman /bin/sh
+f865b9e4e316        vault               "/bin/sh"           About a minute ago   Up About a minute   0.0.0.0:8200->8200/tcp   bold_cartwright
+[abc@foo 16:18:25 - ~]$docker exec  -w /root/config -it bold_cartwright /bin/sh
+~/config # cat ../scripts/user.sh
+export VAULT_SKIP_VERIFY=1
+export VAULT_ADDR=https://foo.dev.home:8200
+~/config # . ../scripts/user.sh
 
-~ # export VAULT_SKIP_VERIFY=1
-~ # export VAULT_ADDR=https://foo.dev.home:8200
-~ # vault operator init -tls-skip-verify
-Unseal Key 1: CkPymnNN/4dsgZ93fgGd5kYFPPk7UH8WFjNP92hqasd2
-Unseal Key 2: rCBvZBAOALkHGWkvtGmARxwy35wq5h7c+4061wZd9hlT
-Unseal Key 3: 4BWZTeXA5ll/QnrHubcDpNjJ2QDmQvjhzSlFmE3Yb1lF
-Unseal Key 4: ET2Gsrl1/fLzBmdMVqJf8lfo+Iab80IT3c04BCcm2kqv
-Unseal Key 5: fsbhZPSQRwg8l6z2vofVjO4xYYDkw45bQ3xbj3fgPMPc
+```
 
-Initial Root Token: s.6vAviCS1F7nNcESMXDtJES2c
+#### One time thing. initialize
+
+```
+~/config # vault operator init -tls-skip-verify
+Unseal Key 1: TrskDMY01eMEemBlSRbdMt3AeptA2Br3rMIp7qkSsvTd
+Unseal Key 2: /HwvkofJu07efPRMlMm6cIa2WcxDVFN19xwJcz0ehSMC
+Unseal Key 3: OHiB6yWl/mMtth6x/tJ5tJclQtwhJVWh/iU5yztT9AHn
+Unseal Key 4: RIIzuOOSV2qZdKrexN7ML7dXFFUs2U1EJeuh8VB9N4JH
+Unseal Key 5: iWcUevGzI35LhDlTUfYO6N54uyOHoFNoU3lqsWRBqwwU
+
+Initial Root Token: s.ix4a42gWLNAS1aiSX8YYyh2t
 
 Vault initialized with 5 key shares and a key threshold of 3. Please securely
 distribute the key shares printed above. When the Vault is re-sealed,
@@ -105,7 +57,13 @@ reconstruct the master key, Vault will remain permanently sealed!
 
 It is possible to generate new unseal keys, provided you have a quorum of
 existing unseal keys shares. See "vault operator rekey" for more information.
-~ # vault operator unseal
+
+```
+
+#### Unseal vault
+
+```
+~/config # vault operator unseal
 Unseal Key (will be hidden):
 Key                Value
 ---                -----
@@ -115,10 +73,10 @@ Sealed             true
 Total Shares       5
 Threshold          3
 Unseal Progress    1/3
-Unseal Nonce       a7e40d03-87b9-4c09-d1b8-59217f319df6
+Unseal Nonce       3955a2d4-a8d9-ce5f-93c2-9bc4d11bae70
 Version            1.5.4
 HA Enabled         true
-~ # vault operator unseal
+~/config # vault operator unseal
 Unseal Key (will be hidden):
 Key                Value
 ---                -----
@@ -128,10 +86,10 @@ Sealed             true
 Total Shares       5
 Threshold          3
 Unseal Progress    2/3
-Unseal Nonce       a7e40d03-87b9-4c09-d1b8-59217f319df6
+Unseal Nonce       3955a2d4-a8d9-ce5f-93c2-9bc4d11bae70
 Version            1.5.4
 HA Enabled         true
-~ # vault operator unseal
+~/config # vault operator unseal
 Unseal Key (will be hidden):
 Key                     Value
 ---                     -----
@@ -141,55 +99,53 @@ Sealed                  false
 Total Shares            5
 Threshold               3
 Version                 1.5.4
-Cluster Name            vault-cluster-cbc2958a
-Cluster ID              09d32fd5-d29f-445f-5ae9-18996c655b49
+Cluster Name            vault-cluster-ff9f3176
+Cluster ID              633de624-d683-b0cf-eae0-2901cbdb9187
 HA Enabled              true
-HA Cluster              https://foo.dev.home:8201
-HA Mode                 active
-Raft Committed Index    29
-Raft Applied Index      29
-~ # vault login s.6vAviCS1F7nNcESMXDtJES2c
+HA Cluster              n/a
+HA Mode                 standby
+Active Node Address     <none>
+Raft Committed Index    24
+Raft Applied Index      24
+
+```
+
+#### Create users and Github authentication
+
+```
+~/config # vault login s.ix4a42gWLNAS1aiSX8YYyh2t
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
 again. Future Vault requests will automatically use this token.
 
 Key                  Value
 ---                  -----
-token                s.6vAviCS1F7nNcESMXDtJES2c
-token_accessor       CxcJu60pPczwc81mFsZcXyda
+token                s.ix4a42gWLNAS1aiSX8YYyh2t
+token_accessor       sVtcgM5OXl45X6hQtFdoWB4X
 token_duration       ∞
 token_renewable      false
 token_policies       ["root"]
 identity_policies    []
 policies             ["root"]
-```
-
-
-### Enable userpass
-
-```
-~ # vault auth enable userpass
+~/config # vault auth enable userpass
 Success! Enabled userpass auth method at: userpass/
-
-```
-
-### Enable KV secrets version 2
-
-```
-~ # vault secrets enable -version=2 kv
-Success! Enabled the kv secrets engine at: kv/
-
-```
-
-### create user abc with admins policy
-
-```
-foo:~$ ~ # vault write auth/userpass/users/abc password=foo policies=admins
+~/config # vault write auth/userpass/users/abc password=foo
 Success! Data written to: auth/userpass/users/abc
-~ # su - abc
-foo:~$ export VAULT_ADDR=https://foo.dev.home:8200
-foo:~$ export VAULT_SKIP_VERIFY=1
-foo:~$ vault login -method=userpass username=abc
+~/config # vault auth enable github
+Success! Enabled github auth method at: github/
+~/config # vault write auth/github/config organization=hpcsquare
+Success! Data written to: auth/github/config
+
+```
+
+#### Test authentication as user abc and also with github id ac427 in a different shell
+
+```
+[abc@foo 16:24:24 - scripts]$cat user.sh
+export VAULT_SKIP_VERIFY=1
+export VAULT_ADDR=https://foo.dev.home:8200
+[abc@foo 16:24:28 - scripts]$. user.sh
+[abc@foo 16:24:30 - scripts]$vault login -method=userpass username=abc
 Password (will be hidden):
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
@@ -197,38 +153,27 @@ again. Future Vault requests will automatically use this token.
 
 Key                    Value
 ---                    -----
-token                  s.uJwzhr7Wh5ipqCrTdwM2v568
-token_accessor         yYPWdLShaI5wbAMQRA8Plump
+token                  s.lb3FC9GGVhsOuoM51WoXD9tr
+token_accessor         OKYedpooZYzg868OjOW7CfSJ
 token_duration         768h
 token_renewable        true
-token_policies         ["admins" "default"]
+token_policies         ["default"]
 identity_policies      []
-policies               ["admins" "default"]
+policies               ["default"]
 token_meta_username    abc
-```
-
-### Enable github auth
+[abc@foo 16:24:34 - scripts]$
 
 ```
-foo:~$ ~ # vault auth enable github
-Success! Enabled github auth method at: github/
-~ # vault write auth/github/config organization=hpcsquare
-Success! Data written to: auth/github/config
 ```
-
-
-### Test login
-
-```
-[abc@foo 17:36:42 - scripts]$vault login -method=github token=$GITHUB_TOKEN
+[abc@foo 16:25:20 - scripts]$vault login -method=github token=$GITHUB_TOKEN
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
 again. Future Vault requests will automatically use this token.
 
 Key                    Value
 ---                    -----
-token                  s.Y7suyU5ygPBrmSfcxiwuB1hN
-token_accessor         oy8a5he6i5RVzxp6jW4qOKlH
+token                  s.Ss2bxMbBIUjwKg4D5IDHnoqz
+token_accessor         oJ7ORq2HokoZmGuwCS2hpk4Y
 token_duration         768h
 token_renewable        true
 token_policies         ["default"]
@@ -236,17 +181,14 @@ identity_policies      []
 policies               ["default"]
 token_meta_org         hpcsquare
 token_meta_username    ac427
-```
-
-### Generate policies and syntax check
 
 ```
-[abc@foo 17:57:34 - policies]$vault policy fmt ops.hcl
-failed to parse policy: path "secret/ops/*": invalid capability "write"
-[abc@foo 17:57:52 - policies]$vi ops.hcl
-[abc@foo 17:58:09 - policies]$vault policy fmt ops.hcl
-Success! Formatted policy: ops.hcl
-[abc@foo 17:58:10 - policies]$vi dev.hcl
+
+#### Lets enable KV2 engine and write some secrets and policies
+
+```
+~/config/policies # vault secrets enable -version=2 kv
+Success! Enabled the kv secrets engine at: kv/
 ~/config/policies # cat dev.hcl
 path "kv/data/dev" {
   capabilities = ["create", "read", "update", "delete", "list"]
@@ -263,23 +205,46 @@ path "kv/data/ops" {
 path "kv/data/ops/*" {
   capabilities = ["create", "read", "update", "delete", "list"]
 }
-
-~/config/policies # vault policy write ops ops.hcl
-Success! Uploaded policy: ops
 ~/config/policies # vault policy write dev dev.hcl
 Success! Uploaded policy: dev
+~/config/policies # vault policy write ops ops.hcl
+Success! Uploaded policy: ops
 ```
 
-### add user to dev and ops policies
+#### Assign policies to user
 
 ```
-~/config/policies # vault write auth/userpass/users/abc policies="dev,ops"
+~/config/policies # vault write auth/userpass/users/abc policies=ops
 Success! Data written to: auth/userpass/users/abc
+~/config/policies # vault write auth/github/map/users/ac427 value=dev
+Success! Data written to: auth/github/map/users/ac427
 ```
 
-### verify as user abc
+
+#### Write secrets in ops and dev path
+
 ```
-[abc@foo 21:41:38 - vault]$vault login -method=userpass username=abc
+~/config/policies # vault kv put kv/ops/password root=root_ops_password
+Key              Value
+---              -----
+created_time     2020-10-07T20:29:10.505628696Z
+deletion_time    n/a
+destroyed        false
+version          1
+~/config/policies # vault kv put kv/dev/password root=root_dev_password
+Key              Value
+---              -----
+created_time     2020-10-07T20:29:20.496320972Z
+deletion_time    n/a
+destroyed        false
+version          1
+
+```
+
+#### Test reading secrets
+
+```
+[abc@foo 16:30:14 - scripts]$vault login -method=userpass username=abc
 Password (will be hidden):
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
@@ -287,42 +252,51 @@ again. Future Vault requests will automatically use this token.
 
 Key                    Value
 ---                    -----
-token                  s.G2f0xVRTVaKGqKTC0gGD8wAG
-token_accessor         SwDSjVDQEe8K4i5n6uqvvSEF
+token                  s.9dky2v23h1frBnYM59xIR2QD
+token_accessor         mID6EPDUwz3GKd5ZWPWxL0T2
 token_duration         768h
 token_renewable        true
-token_policies         ["default" "dev" "ops"]
+token_policies         ["default" "ops"]
 identity_policies      []
-policies               ["default" "dev" "ops"]
+policies               ["default" "ops"]
 token_meta_username    abc
-[abc@foo 21:42:05 - vault]$vault kv put kv/dev/foo foo=bar
+[abc@foo 16:30:20 - scripts]$vault kv get kv/ops/password
+====== Metadata ======
 Key              Value
 ---              -----
-created_time     2020-10-03T01:42:09.764525194Z
+created_time     2020-10-07T20:29:10.505628696Z
 deletion_time    n/a
 destroyed        false
-version          2
+version          1
+
+==== Data ====
+Key     Value
+---     -----
+root    root_ops_password
+[abc@foo 16:30:42 - scripts]$vault kv get kv/dev/password
+Error reading kv/data/dev/password: Error making API request.
+
+URL: GET https://foo.dev.home:8200/v1/kv/data/dev/password
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+
 ```
 
-### Give github user ac427 access to dev policy
-
 ```
-~/config/policies # vault write auth/github/map/users/ac427 value=dev
-Success! Data written to: auth/github/map/users/ac427
-```
-
-### Verify as user ac427
-
-```
-[abc@foo 21:43:02 - vault]$vault login -method=github token=$GITHUB_TOKEN
+[abc@foo 16:30:47 - scripts]$$vault login -method=github token=$GITHUB_TOKEN
+login: invalid option -- 'm'
+Try 'login --help' for more information.
+[abc@foo 16:31:32 - scripts]$vault login -method=github token=$GITHUB_TOKEN
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
 again. Future Vault requests will automatically use this token.
 
 Key                    Value
 ---                    -----
-token                  s.EiCGz7JOCFWi60K2xyhhwZUR
-token_accessor         AyUQibKCEW3NdHpwYeZSBFBG
+token                  s.HCcYPqBRHhpVyb2zB2gTc2sz
+token_accessor         USwlC63LWDbvkug3pnnIIhxg
 token_duration         768h
 token_renewable        true
 token_policies         ["default" "dev"]
@@ -330,25 +304,312 @@ identity_policies      []
 policies               ["default" "dev"]
 token_meta_org         hpcsquare
 token_meta_username    ac427
+[abc@foo 16:31:37 - scripts]$vault kv get kv/dev/password
+====== Metadata ======
+Key              Value
+---              -----
+created_time     2020-10-07T20:29:20.496320972Z
+deletion_time    n/a
+destroyed        false
+version          1
 
-### permission denined to the policy ops ( as expected )
-[abc@foo 21:46:57 - vault]$vault kv put kv/ops/foo foo=bar
-Error writing data to kv/data/ops/foo: Error making API request.
+==== Data ====
+Key     Value
+---     -----
+root    root_dev_password
+[abc@foo 16:31:43 - scripts]$vault kv get kv/ops/password
+Error reading kv/data/ops/password: Error making API request.
 
-URL: PUT https://foo.dev.home:8200/v1/kv/data/ops/foo
+URL: GET https://foo.dev.home:8200/v1/kv/data/ops/password
 Code: 403. Errors:
 
 * 1 error occurred:
 	* permission denied
 
-### write to path in dev policy
+```
+#### Enable App roles
 
-[abc@foo 21:47:05 - vault]$vault kv put kv/dev/foo foo=bar
+```
+~/config/policies # vault auth enable approle
+Success! Enabled approle auth method at: approle/
+
+```
+### create app roles and polices
+```
+~/scripts/app_roles # cat jobs
+bin
+crawler
+github_scripts
+~/scripts/app_roles # cat travis_*.hcl
+path "kv/data/travis/bin" {
+  capabilities = ["read"]
+}
+path "kv/data/travis/crawler" {
+  capabilities = ["read"]
+}
+path "kv/data/travis/github_scripts" {
+  capabilities = ["read"]
+}
+~/scripts/app_roles # cat create_approle.sh
+#!/bin/sh
+
+vault policy write travis travis.hcl
+
+for job in $(cat jobs)
+do
+    vault write auth/approle/role/$job \
+        secret_id_ttl=10m \
+        token_num_uses=10 \
+        token_ttl=20m \
+        token_max_ttl=30m \
+        secret_id_num_uses=40
+
+    vault policy write travis_$job travis_$job.hcl
+done
+~/scripts/app_roles # ./create_approle.sh
+Success! Uploaded policy: travis
+Success! Data written to: auth/approle/role/bin
+Success! Uploaded policy: travis_bin
+Success! Data written to: auth/approle/role/crawler
+Success! Uploaded policy: travis_crawler
+Success! Data written to: auth/approle/role/github_scripts
+Success! Uploaded policy: travis_github_scripts
+~/scripts/app_roles # cat travis.hcl
+path "auth/token/create" {
+  capabilities = [ "create","update"]
+}
+
+```
+
+```
+~/scripts/app_roles # cat myapp.hcl
+path "kv/data/myapp/*" {
+  capabilities = [ "read" ]
+}
+~/scripts/app_roles #  vault policy write  myapp myapp.hcl
+Success! Uploaded policy: myapp
+~/scripts/app_roles # vault write auth/approle/role/myapp token_policies="myapp"
+Success! Data written to: auth/approle/role/myapp
+~/scripts/app_roles # vault read auth/approle/role/myapp
+Key                        Value
+---                        -----
+bind_secret_id             true
+local_secret_ids           false
+secret_id_bound_cidrs      <nil>
+secret_id_num_uses         0
+secret_id_ttl              0s
+token_bound_cidrs          []
+token_explicit_max_ttl     0s
+token_max_ttl              0s
+token_no_default_policy    false
+token_num_uses             0
+token_period               0s
+token_policies             [myapp]
+token_ttl                  0s
+token_type                 default
+
+~/scripts/app_roles # vault read auth/approle/role/myapp/role-id
+Key        Value
+---        -----
+role_id    ac797686-5816-e7a8-fd18-f5aca9a3e0ca
+
+~/scripts/app_roles # vault write -f auth/approle/role/myapp/secret-id
+Key                   Value
+---                   -----
+secret_id             4181a769-6bc5-49dd-68fd-6f13b28b5a43
+secret_id_accessor    40e6e04f-bd13-ebaf-e077-943334551973
+
+## write some secrets
+~/scripts/app_roles # vault kv put kv/myapp/password root=myapprootpassword
 Key              Value
 ---              -----
-created_time     2020-10-03T01:47:09.853215004Z
+created_time     2020-10-08T00:51:36.430508163Z
 deletion_time    n/a
 destroyed        false
-version          3
+version          1
+~/scripts/app_roles
+```
 
+#### On a different shell try to read secrets with app role info
+```
+[abc@foo 20:51:40 - ~]$rm ~/.vault-token
+[abc@foo 20:52:48 - ~]$vault write auth/approle/login role_id=ac797686-5816-e7a8-fd18-f5aca9a3e0ca secret_id=4181a769-6bc5-49dd-68fd-6f13b28b5a43
+Key                     Value
+---                     -----
+token                   s.TIsHk019gPm8pjUrU2JLhWtO
+token_accessor          w26HMdlqTqZpbh0u5c4DJsRJ
+token_duration          768h
+token_renewable         true
+token_policies          ["default" "myapp"]
+identity_policies       []
+policies                ["default" "myapp"]
+token_meta_role_name    myapp
+[abc@foo 20:53:05 - ~]$VAULT_TOKEN=s.TIsHk019gPm8pjUrU2JLhWtO vault kv get kv/myapp/password
+====== Metadata ======
+Key              Value
+---              -----
+created_time     2020-10-08T00:51:36.430508163Z
+deletion_time    n/a
+destroyed        false
+version          1
+
+==== Data ====
+Key     Value
+---     -----
+root    myapprootpassword
+
+```
+
+#### Tokens
+```
+~/scripts/app_roles # vault write auth/userpass/users/abc policies=ops,travis,travis_bin,travis_crawler,travis_github_scripts
+Success! Data written to: auth/userpass/users/abc
+```
+
+
+#### Now travis admin can generate parent token
+
+```
+#### Login as user abc
+abc@foo 18:21:51 - vault]$vault login -method=userpass username=abc
+Password (will be hidden):
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                    Value
+---                    -----
+token                  s.o9wx94vRMddFtYYD1Xmfp8QE
+token_accessor         82opuwLFFhvVvZfmUvUbmpM4
+token_duration         768h
+token_renewable        true
+token_policies         ["default" "ops" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+identity_policies      []
+policies               ["default" "ops" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+token_meta_username    abc
+
+```
+
+```
+[abc@foo 20:20:13 - vault]$vault token create -policy=travis_bin -policy=travis_crawler -policy=travis_bin
+Key                  Value
+---                  -----
+token                s.Fe2WBYSPTGpxYolWwYNM3iVv
+token_accessor       QaraXOOgCxKt8hlZMBxJPTOL
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "travis_bin" "travis_crawler"]
+identity_policies    []
+policies             ["default" "travis_bin" "travis_crawler"]
+```
+
+#### Now we can use the token to create child tokens and use that for requests from jobs
+
+```
+[abc@foo 20:35:18 - vault]$vault token create -policy=travis_bin -policy=travis_crawler -policy=travis_github_scripts
+Key                  Value
+---                  -----
+token                s.GOcUnDZK9HgX0LMy83ikKUjY
+token_accessor       MJuY6SSoDSC4GiYQ9bRpwoO0
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "travis_bin" "travis_crawler" "travis_github_scripts"]
+identity_policies    []
+policies             ["default" "travis_bin" "travis_crawler" "travis_github_scripts"]
+[abc@foo 20:35:26 - vault]$
+
+```
+
+```
+[abc@foo 20:36:40 - vault]$vault]$vault login -method=userpass username=abc
+bash: vault]: command not found...
+[abc@foo 20:36:57 - vault]$vault login -method=userpass username=abc
+Password (will be hidden):
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                    Value
+---                    -----
+token                  s.xAtm7ypHSy85nE8uQdqRmBFJ
+token_accessor         AwLonEKc8h0YDzSic91su572
+token_duration         768h
+token_renewable        true
+token_policies         ["default" "ops" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+identity_policies      []
+policies               ["default" "ops" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+token_meta_username    abc
+[abc@foo 20:37:40 - vault]$vault token create -policy=travis -policy=travis_crawler -policy=travis_bin -policy=travis_github_scripts
+Key                  Value
+---                  -----
+token                s.6XDiKUJXgyg93GL0mt2Lmz1M
+token_accessor       reEmSuiRyEWfg2QYs56z1KLM
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+identity_policies    []
+policies             ["default" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+[abc@foo 20:37:49 - vault]$rm ~/.vault-token
+[abc@foo 20:38:04 - vault]$vault login s.6XDiKUJXgyg93GL0mt2Lmz1M
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                s.6XDiKUJXgyg93GL0mt2Lmz1M
+token_accessor       reEmSuiRyEWfg2QYs56z1KLM
+token_duration       767h59m36s
+token_renewable      true
+token_policies       ["default" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+identity_policies    []
+policies             ["default" "travis" "travis_bin" "travis_crawler" "travis_github_scripts"]
+[abc@foo 20:38:11 - vault]$vault token create -policy=travis_bin
+Key                  Value
+---                  -----
+token                s.9MNCKgKEMmIcxq5bS82wJ4Yb
+token_accessor       m3y7Kc3XlMB2j0MZ8Df0Hkhj
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "travis_bin"]
+identity_policies    []
+policies             ["default" "travis_bin"]
+[abc@foo 20:38:17 - vault]$vault login s.9MNCKgKEMmIcxq5bS82wJ4Yb
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                s.9MNCKgKEMmIcxq5bS82wJ4Yb
+token_accessor       m3y7Kc3XlMB2j0MZ8Df0Hkhj
+token_duration       767h59m48s
+token_renewable      true
+token_policies       ["default" "travis_bin"]
+identity_policies    []
+policies             ["default" "travis_bin"]
+[abc@foo 20:38:29 - vault]$vault kv get  kv/travis/bin
+====== Metadata ======
+Key              Value
+---              -----
+created_time     2020-10-08T00:34:02.149495245Z
+deletion_time    n/a
+destroyed        false
+version          1
+
+=== Data ===
+Key    Value
+---    -----
+abc    bingghjj
+[abc@foo 20:38:37 - vault]$vault kv get  kv/travis/crawler
+Error reading kv/data/travis/crawler: Error making API request.
+
+URL: GET https://foo.dev.home:8200/v1/kv/data/travis/crawler
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+
+
+[abc@foo 20:38:51 - vault]$
 ```
