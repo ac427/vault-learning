@@ -521,8 +521,6 @@ policies             ["default" "travis_bin" "travis_crawler" "travis_github_scr
 ```
 
 ```
-[abc@foo 20:36:40 - vault]$vault]$vault login -method=userpass username=abc
-bash: vault]: command not found...
 [abc@foo 20:36:57 - vault]$vault login -method=userpass username=abc
 Password (will be hidden):
 Success! You are now authenticated. The token information displayed below
