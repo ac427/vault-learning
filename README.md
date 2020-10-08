@@ -613,3 +613,53 @@ Code: 403. Errors:
 
 [abc@foo 20:38:51 - vault]$
 ```
+#### Token roles
+
+```
+~/scripts/app_roles # vault policy write travis-admin travis-admin-role.hcl
+Success! Uploaded policy: travis-admin
+~/scripts/app_roles # vault policy read  travis-admin
+path "auth/token/roles/travis-admin" { capabilities = ["read"] }
+path "auth/token/create/travis-admin" { capabilities = ["sudo", "create", "update"] }
+path "auth/token/roles/travis-admin" { capabilities = ["read"] }
+~/scripts/app_roles # vault write auth/token/roles/travis-admin allowed_policies=travis_crawler,travis_bin,travis_github_scripts
+Success! Data written to: auth/token/roles/travis-admin
+~/scripts/app_roles # vault token create -policy=travis-admin
+Key                  Value
+---                  -----
+token                s.NyRLA4Yu7zPLavGNXyVeWxV6
+token_accessor       tVRDPUZyWMn5iap4g9VaoPWs
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "travis-admin"]
+identity_policies    []
+policies             ["default" "travis-admin"]
+```
+#### Now we can use the token above to create child tokens to individual policies and return them on request by individual travis job ( you obviously have to write some kind of verification request that it is legit)
+
+```
+[abc@foo 08:26:05 - app_roles]$vault login s.NyRLA4Yu7zPLavGNXyVeWxV6
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                s.NyRLA4Yu7zPLavGNXyVeWxV6
+token_accessor       tVRDPUZyWMn5iap4g9VaoPWs
+token_duration       767h59m34s
+token_renewable      true
+token_policies       ["default" "travis-admin"]
+identity_policies    []
+policies             ["default" "travis-admin"]
+[abc@foo 08:28:16 - app_roles]$vault token create -role=travis-admin -policy=travis_bin
+Key                  Value
+---                  -----
+token                s.cBHYKAldlUVoTD9tITZKgOzW
+token_accessor       pP4l2bWKKf5g14nbwGplE0zp
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "travis_bin"]
+identity_policies    []
+policies             ["default" "travis_bin"]
+```
