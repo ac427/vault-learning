@@ -650,14 +650,16 @@ token_renewable      true
 token_policies       ["default" "travis-admin"]
 identity_policies    []
 policies             ["default" "travis-admin"]
-[abc@foo 08:28:16 - app_roles]$vault token create -role=travis-admin -policy=travis_bin
+
+[abc@foo 08:43:23 - app_roles]$vault token create -role=travis-admin -policy=travis_bin -period=5m -renewable=false
 Key                  Value
 ---                  -----
-token                s.cBHYKAldlUVoTD9tITZKgOzW
-token_accessor       pP4l2bWKKf5g14nbwGplE0zp
-token_duration       768h
-token_renewable      true
+token                s.FxzFMqnbMxw0jRyXZ3VGJeM8
+token_accessor       8yVZDQvp2reIDzShHkLfXxsg
+token_duration       5m
+token_renewable      false
 token_policies       ["default" "travis_bin"]
 identity_policies    []
 policies             ["default" "travis_bin"]
+
 ```
